@@ -305,7 +305,7 @@ The `app.R` is a full CRUD application connected live to PostgreSQL:
 ## Author
 
 **João Pires**
-[LinkedIn](www.linkedin.com/in/joaoo-piress) · [GitHub](https://github.com/joaoopiress)
+[LinkedIn](https://www.linkedin.com/in/joaopires) · [GitHub](https://github.com/joaoopiress)
 
 ---
 
