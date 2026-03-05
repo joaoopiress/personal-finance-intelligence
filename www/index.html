@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{ headContent() }}
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Intelligence | Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  /* ── 1. GLOBAL STYLES ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0A0E1A;
+    --surface:  #111827;
+    --surface2: #1C2537;
+    --border:   #1F2D45;
+    --text:     #E2E8F0;
+    --muted:    #64748B;
+    --accent:   #38BDF8;
+    --accent2:  #818CF8;
+    --green:    #34D399;
+    --red:      #F87171;
+    --orange:   #FB923C;
+    --font-sans: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: var(--font-sans); min-height: 100vh; overflow-x: hidden;
+    display: flex; flex-direction: column;
+  }
+
+  /* Grid pattern background overlay */
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0;
+    background-image: linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px), 
+                      linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+    background-size: 48px 48px; pointer-events: none;
+  }
+
+  /* ── 2. HEADER & LOGO ── */
+  header {
+    position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 40px; border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(56,189,248,0.05) 0%, transparent 100%);
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-mark {
+    width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px; color: #fff; box-shadow: 0 0 20px rgba(56,189,248,0.4);
+  }
+  .logo-text { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+  .logo-text span { color: var(--accent); }
+  
+  .header-meta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-align: right; line-height: 1.8; }
+  .status-dot { display: inline-block; width: 6px; height: 6px; background: var(--green); border-radius: 50%; margin-right: 6px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ── 3. LAYOUT SYSTEM ── */
+  .app-container {
+    display: flex; width: 100%; max-width: 1600px; margin: 0 auto; gap: 30px; align-items: flex-start;
+  }
+
+  aside.sidebar { width: 320px; flex-shrink: 0; }
+
+  main { 
+    flex-grow: 1; display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; min-width: 0; 
+  }
+
+  .section-label {
+    grid-column: 1 / -1; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-top: 30px; margin-bottom: 15px; opacity: 0.7;
+  }
+
+  /* ── 4. UI COMPONENTS ── */
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 24px; position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: rgba(56,189,248,0.3); transform: translateY(-1px); }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(56,189,248,0.4), transparent); }
+
+  .stat-card { grid-column: span 4; }
+  .stat-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .stat-value { font-size: 32px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; margin-bottom: 6px; }
+  .stat-value.dollar::before { content: '€'; font-size: 18px; color: var(--muted); vertical-align: super; margin-right: 2px; }
+  .stat-delta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .stat-accent { position: absolute; bottom: 16px; right: 20px; font-size: 28px; opacity: 0.12; }
+
+  .chart-monthly { grid-column: span 7; }
+  .chart-donut   { grid-column: span 5; }
+  .expenses-card { grid-column: span 12; }
+  .forecast-ensemble-card { grid-column: span 12; width: 100%; padding: 30px; }
+
+  .card-title { font-size: 14px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
+  .card-subtitle { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-bottom: 20px; }
+
+  /* ── 5. FORM & TABLES ── */
+  .dataTables_wrapper, table.dataTable { color: var(--text) !important; font-size: 13px; }
+  table.dataTable thead th { border-bottom: 1px solid var(--border) !important; color: var(--muted); font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; }
+  table.dataTable tbody tr { background-color: transparent !important; }
+  table.dataTable tbody td { border-top: 1px solid var(--border) !important; padding: 12px 8px !important; }
+  
+  .form-control, .form-select { background-color: var(--surface2) !important; border: 1px solid var(--border) !important; color: var(--text) !important; border-radius: 8px; font-family: var(--font-mono); }
+  
+  .form-select, .selectize-input { 
+      padding-right: 50px !important; 
+      padding-left: 15px !important;  
+      text-align: left !important;    
+  }
+  .btn-success { background: linear-gradient(135deg, var(--green), #059669) !important; border: none !important; color: #000 !important; font-weight: 700 !important; border-radius: 8px !important; }
+
+  /* ── 6. FOOTER ── */
+  footer {
+    display: block; width: 100%; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px 0; margin-top: 60px; color: var(--muted); font-size: 11px; font-family: var(--font-mono);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">₿</div>
+    <div class="logo-text">Finance<span>Intelligence</span></div>
+  </div>
+  <div class="header-meta">
+    <div><span class="status-dot"></span>LIVE ANALYSIS</div>
+    <div>{{ month_filter_ui }}</div>
+  </div>
+</header>
+
+<div class="app-container">
+  
+  <aside class="sidebar">
+    <div class="card" style="margin-bottom: 40px;">
+      <div class="card-title" style="margin-bottom: 20px; color: var(--accent);">// ADD TRANSACTION</div>
+      {{ form_ui }}
+    </div>
+
+    <div class="card">
+      <div class="card-title">Spending by Category</div>
+      <div class="card-subtitle">All-time breakdown</div>
+      <div class="chart-wrap" style="display: flex; justify-content: center; align-items: center;">
+        {{ chart_donut_sidebar }}
+      </div> 
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+        <div class="card-title" style="margin-bottom: 0;">Category Forecast</div>
+        <span style="background: rgba(129,140,248,0.2); color: var(--accent2); padding: 2px 8px; border-radius: 12px; font-size: 9px; font-family: var(--font-mono); font-weight: 600;">● ML</span>
+      </div>
+      <div class="card-subtitle">Predicted vs historical average</div>
+      {{ table_forecast }}
+    </div>
+  </aside>
+
+  <main>
+    <div class="section-label">// OVERVIEW</div>
+
+    <div class="card stat-card" style="border-color: rgba(56,189,248,0.25);">
+      <div class="stat-label">Total Spent</div>
+      <div class="stat-value dollar">{{ kpi_total }}</div>
+      <div class="stat-delta">Selected period</div>
+      <div class="stat-accent">💸</div>
+    </div>
+
+    <div class="card stat-card" style="border-color: rgba(52,211,153,0.25);">
+      <div class="stat-label">Avg Transaction</div>
+      <div class="stat-value dollar">{{ kpi_avg }}</div>
+      <div class="stat-delta">{{ kpi_avg_delta }}</div>
+      <div class="stat-accent">📊</div>
+    </div>
+
+    <div class="card stat-card" style="border-color: rgba(129,140,248,0.25);">
+      <div class="stat-label">Top Category</div>
+      <div class="stat-value" style="font-size: 24px; margin-top: 8px;">{{ kpi_top }}</div>
+      <div class="stat-delta">By volume</div>
+      <div class="stat-accent">🏆</div>
+    </div>
+
+    <div class="section-label">// NEXT-MONTH FORECAST</div>
+    
+    <div class="card forecast-ensemble-card">
+      {{ forecast_ensemble_ui }}
+    </div>
+
+    <div class="section-label">// SPENDING ANALYSIS</div>
+
+    <div class="card chart-monthly">
+      <div class="card-title">Category Breakdown</div>
+      <div class="card-subtitle">Volume per category</div>
+      {{ chart_categories }}
+    </div>
+
+    <div class="card chart-donut">
+      <div class="card-title">Monthly Spending Trend</div>
+      <div class="card-subtitle">Historical overview of expenses</div>
+      {{ chart_forecast }}
+    </div>
+
+    <div class="section-label">// DETAILS</div>
+
+    <div class="card expenses-card">
+      <div class="card-title">Recent Transactions</div>
+      <div class="card-subtitle">Live database view</div>
+      {{ table_recent }}
+    </div>
+  </main>
+
+</div>
+
+<footer>
+  Built with R · PostgreSQL · Shiny — Intelligence by Multinomial Logistic Regression
+</footer>
+
+</body>
+</html>
