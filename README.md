@@ -263,17 +263,20 @@ The `app.R` is a full CRUD application connected live to PostgreSQL:
 
 ## SQL Queries
 
-`sql/queries.sql` contains 9 ready-to-run PostgreSQL queries:
+`sql/queries.sql` contains 10 ready-to-run PostgreSQL queries for ad-hoc analysis directly in DataGrip or pgAdmin — independent of the Shiny app. The app executes equivalent queries inline via `DBI`, but this file serves as a standalone analytical reference.
 
-1. Monthly spending summary
-2. Spending by category (all time)
-3. Monthly spending by category
-4. Top 10 largest single expenses
-5. Recurring expense detection (appears in 3+ months)
-6. Month-over-month spending change with `LAG()`
-7. Essential vs discretionary split
-8. Budget vs actual variance
-9. 7-day rolling average spending velocity
+| Query | Description | Used in code |
+|---|---|---|
+| Q1 — Monthly Summary | Total spent, transaction count and averages per month | `03_forecast.R`, `app.R` |
+| Q2 — Spending by Category | All-time totals, averages and % of total per category | `app.R` (donut chart, category plot) |
+| Q3 — Monthly by Category | Monthly breakdown per category (pivot-style) | `03_forecast.R` (category forecasts) |
+| Q4 — Top 10 Expenses | Largest individual transactions with category | Ad-hoc analysis |
+| Q5 — Recurring Detection | Merchants appearing in 3+ months with total paid | Ad-hoc analysis |
+| Q6 — Month-over-Month | Spending change and % delta using `LAG()` window function | `app.R` (KPI delta indicator) |
+| Q7 — Essential vs Discretionary | Split between essential and discretionary categories | Ad-hoc analysis |
+| Q8 — Budget vs Actual | Variance against budget targets *(requires budgets table populated)* | Ad-hoc analysis |
+| Q9 — Merchant Drill-down | Filter transactions by merchant keyword (e.g. cafés) | Ad-hoc analysis |
+| Q10 — Rolling Average | 7-day rolling average of daily spending using window functions | Ad-hoc analysis |
 
 ---
 
