@@ -1,8 +1,6 @@
 # Personal Finance Intelligence
 
-> **Automated transaction classification · Spending analytics · ML-powered forecasting · Interactive Shiny dashboard**
-
-A full-stack personal finance analytics system built with R, PostgreSQL, and Shiny. Transactions are loaded from CSV, cleaned and stored in a relational database, automatically classified into spending categories using a machine learning model trained iteratively, and visualised in a live web application — where users can also add and delete transactions in real time.
+A personal finance analytics system built with R, PostgreSQL, and Shiny. Transactions are loaded from CSV or user input (through app.R), cleaned and stored in a database, automatically classified into spending categories using a machine learning model trained iteratively, and visualised in a live web application — where users can also add and delete transactions in real time.
 
 ---
 
@@ -14,7 +12,7 @@ A full-stack personal finance analytics system built with R, PostgreSQL, and Shi
 
 ## What This Project Does
 
-Most bank exports give you raw merchant strings like `"PINGO DOCE 0342"` or `"GALP COMBUSTIVEL"`. This system:
+This system:
 
 1. **Ingests** raw transaction CSVs and loads them into PostgreSQL
 2. **Classifies** each transaction automatically using a trained ML model
