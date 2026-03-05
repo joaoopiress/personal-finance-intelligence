@@ -269,7 +269,7 @@ The `app.R` is a full CRUD application connected live to PostgreSQL:
 
 ## SQL Queries
 
-`sql/queries.sql` contains 10 ready-to-run PostgreSQL queries:
+`sql/queries.sql` contains 9 ready-to-run PostgreSQL queries:
 
 1. Monthly spending summary
 2. Spending by category (all time)
@@ -279,8 +279,7 @@ The `app.R` is a full CRUD application connected live to PostgreSQL:
 6. Month-over-month spending change with `LAG()`
 7. Essential vs discretionary split
 8. Budget vs actual variance
-9. Merchant drill-down (e.g., coffee shops)
-10. 7-day rolling average spending velocity
+9. 7-day rolling average spending velocity
 
 ---
 
