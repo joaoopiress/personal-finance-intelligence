@@ -13,8 +13,8 @@ library(lubridate)
 library(stringr)
 
 # ── Configuration ─────────────────────────────────────────────
-DATA_DIR  <- "C:/Users/João Pires/Documents/FInt/data"
-SQL_DIR   <- "C:/Users/João Pires/Documents/FInt/sql"
+DATA_DIR  <- "path"
+SQL_DIR   <- "path"
 CSV_PATH  <- file.path(DATA_DIR, "transactions.csv")
 
 cat("=== Personal Finance Intelligence: Data Pipeline ===\n\n")
@@ -135,4 +135,5 @@ summary_q <- dbGetQuery(con, "
 print(summary_q)
 
 dbDisconnect(con)
+
 cat("\n✓ Pipeline complete.\n")
