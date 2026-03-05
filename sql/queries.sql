@@ -39,13 +39,13 @@ ORDER BY month, total_spent DESC;
 
 -- ── 4. TOP 10 LARGEST SINGLE EXPENSES ───────────────────────
 SELECT
-    date,
-    description,
-    ROUND(amount, 2)                 AS amount,
+    t.date,
+    t.description,
+    ROUND(t.amount, 2)               AS amount,
     c.name                           AS category
 FROM transactions t
 JOIN categories c ON t.category_id = c.id
-ORDER BY amount DESC
+ORDER BY t.amount DESC
 LIMIT 10;
 
 -- ── 5. RECURRING EXPENSE DETECTION ──────────────────────────
@@ -101,10 +101,21 @@ FROM budgets b
 JOIN categories c  ON b.category_id = c.id
 LEFT JOIN transactions t ON t.category_id = c.id
     AND TO_CHAR(t.date, 'YYYY-MM') = b.month
-WHERE b.month = '2024-06'
+WHERE b.month = '2024-06'  -- Change to the month you want to analyse
 GROUP BY c.name, b.budget_amt
 ORDER BY variance DESC;
 
+-- ── 9. COFFEE SHOP DEEP DIVE (example merchant drill-down) ──
+SELECT
+    date,
+    description,
+    ROUND(amount, 2) AS amount
+FROM transactions
+WHERE description ILIKE '%CAFE%'
+   OR description ILIKE '%DELTA%'
+   OR description ILIKE '%STARBUCKS%'
+   OR description ILIKE '%COFFEE%'
+ORDER BY date;
 
 -- ── 10. SPENDING VELOCITY (7-DAY ROLLING AVERAGE) ───────────
 SELECT
