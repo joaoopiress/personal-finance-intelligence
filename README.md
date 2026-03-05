@@ -301,7 +301,8 @@ The `app.R` is a full CRUD application connected live to PostgreSQL:
 
 ## Author
 
-Built as a portfolio project demonstrating end-to-end data engineering, machine learning, and full-stack application development in R.
+**João Pires**
+[LinkedIn](www.linkedin.com/in/joaoo-piress) · [GitHub](https://github.com/joaoopiress)
 
 ---
 
