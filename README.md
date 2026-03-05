@@ -41,12 +41,6 @@ personal-finance-intelligence/
 │
 ├── data/
 │   └── transactions.csv         # Input data (date, description, amount, category)
-│
-└── analysis/                    # Auto-generated output directory
-    ├── predictions.csv          # Per-transaction ML predictions + confidence scores
-    ├── model_summary.json       # Model accuracy comparison (3 attempts)
-    ├── category_forecasts.csv   # Per-category spending projections
-    └── spending_forecast.png    # Forecast visualisation (ggplot2)
 ```
 
 ---
