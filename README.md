@@ -304,6 +304,10 @@ The `app.R` is a full CRUD application connected live to PostgreSQL:
 **João Pires**
 [LinkedIn](www.linkedin.com/in/joaoo-piress) · [GitHub](https://github.com/joaoopiress)
 
+
+![R](https://img.shields.io/badge/R-276DC3?style=flat&logo=r&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)
+![Shiny](https://img.shields.io/badge/Shiny-blue?style=flat&logo=r&logoColor=white)
 ---
 
 *Transaction data used in development is synthetic. No real financial data is included in this repository.*
