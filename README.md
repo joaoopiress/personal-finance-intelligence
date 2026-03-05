@@ -8,7 +8,7 @@ A full-stack personal finance analytics system built with R, PostgreSQL, and Shi
 
 ## Dashboard Preview
 
-> Open the Shiny app by running `app.R` in RStudio.
+![Dashboard Demo](assets/demo.gif)
 
 ---
 
